@@ -1,0 +1,5 @@
+# Ignore the IDEA of pycharm
+.idea
+
+# Ignore the data folder
+data
