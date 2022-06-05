@@ -1,5 +1,5 @@
 def read_file(filename: str = "input.txt") -> list:
-    with open("day5data.txt", "r") as f:
+    with open("../data/day5data.txt", "r") as f:
         lines = [line.split(" -> ") for line in f.read().strip().split("\n")]
     return [
         [(int(s[0]), int(s[1])) for s in (x.split(",") for x in line)] for line in lines
