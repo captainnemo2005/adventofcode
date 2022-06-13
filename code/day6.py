@@ -49,5 +49,5 @@ def part2(fishes: list, day: int)-> int:
     return sum(fishes_)
 if __name__ == "__main__":
     fishes = read_data()
-    # print(f"Part 1: {part1(fishes,80)}")
+    print(f"Part 1: {part1(fishes,80)}")
     print(f"Part 2: {part2(fishes,256)}")
