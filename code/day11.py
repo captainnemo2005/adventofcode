@@ -15,12 +15,14 @@ import logging as log
 
 log.basicConfig(level=log.DEBUG, format="%(asctime)s %(message)s")
 
-def read_data()->list:
-    with open('../data/day11data.txt','r') as file:
+
+def read_data() -> list:
+    with open("../data/day11data.txt", "r") as file:
         lines = file.read().splitlines()
         return [[int(c) for c in line] for line in lines]
 
-def part1(vals)->int:
+
+def part1(vals) -> int:
     flashes = 0
     for step in range(100):
         # log.info("Increase all octopuses by 1... ")
@@ -29,7 +31,7 @@ def part1(vals)->int:
                 vals[i][j] += 1
         change = True
         # log.info("Create the flash matrix for each octopus...")
-        flashed = [[False]*len(vals[0]) for _ in range(len(vals))]
+        flashed = [[False] * len(vals[0]) for _ in range(len(vals))]
 
         while change:
             change = False
@@ -38,11 +40,16 @@ def part1(vals)->int:
                     if vals[i][j] > 9 and not flashed[i][j]:
                         flashed[i][j] = True
                         change = True
-                        for k in range(-1,2):
-                            for m in range(-1,2):
-                                newi = i+k
-                                newj = j+m
-                                if 0 <= newi and newi < len(vals) and 0 <= newj and newj < len(vals[0]):
+                        for k in range(-1, 2):
+                            for m in range(-1, 2):
+                                newi = i + k
+                                newj = j + m
+                                if (
+                                    0 <= newi
+                                    and newi < len(vals)
+                                    and 0 <= newj
+                                    and newj < len(vals[0])
+                                ):
                                     vals[newi][newj] += 1
 
         for i in range(len(vals)):
@@ -53,7 +60,8 @@ def part1(vals)->int:
 
     return flashes
 
-def part2(vals)-> int:
+
+def part2(vals) -> int:
     for step in range(10000):
         flashes = 0
 
@@ -74,7 +82,12 @@ def part2(vals)-> int:
                             for m in range(-1, 2):
                                 newi = i + k
                                 newj = j + m
-                                if 0 <= newi and newi < len(vals) and 0 <= newj and newj < len(vals[0]):
+                                if (
+                                    0 <= newi
+                                    and newi < len(vals)
+                                    and 0 <= newj
+                                    and newj < len(vals[0])
+                                ):
                                     vals[newi][newj] += 1
 
         for i in range(len(vals)):
@@ -86,7 +99,8 @@ def part2(vals)-> int:
         if flashes == 100:
             return step + 1
 
-if __name__ =='__main__':
+
+if __name__ == "__main__":
     log.info(f"Read data ....")
     log.info(f"Part 1 = {part1(read_data())}")
     log.info(f"Part 2 = {part2(read_data())}")
