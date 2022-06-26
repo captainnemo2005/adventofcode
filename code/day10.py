@@ -56,7 +56,8 @@ log.basicConfig(level=log.DEBUG, format="%(asctime)s %(message)s")
 BRACKET_MAP = {")": "(", "]": "[", "}": "{", ">": "<"}
 OPEN_BRACKETS = ["(", "[", "{", "<"]
 CLOSE_BRACKETS = [")", "]", "}", ">"]
-SCORE_MAP = {")": 3, "]": 57, "}": 1197, ">": 25137}
+SCORE_MAP_PART1 = {")": 3, "]": 57, "}": 1197, ">": 25137}
+SCORE_MAP_PART2 = {")": 1, "]": 2, "}": 3, ">": 4}
 
 
 def read_data() -> list:
@@ -76,18 +77,60 @@ def part1(vals) -> int:
                 open_bracket_in_queue = queue.pop(len(queue) - 1)
                 expect_open_bracket = BRACKET_MAP.get(i)
                 if expect_open_bracket == open_bracket_in_queue:
-                    log.info(
-                        f"Expected {expect_open_bracket}, found {open_bracket_in_queue}"
-                    )
+                    # log.info(
+                    #     f"Expected {expect_open_bracket}, found {open_bracket_in_queue} for {i}"
+                    # )
+                    pass
                 else:
-                    log.info(
-                        f"Expected {expect_open_bracket}, but found {open_bracket_in_queue} instead."
-                    )
-                    total_score += SCORE_MAP.get(i)
+                    # log.info(
+                    #     f"Expected {expect_open_bracket}, but found {open_bracket_in_queue} instead for {i}"
+                    # )
+                    total_score += SCORE_MAP_PART1.get(i)
+                    break
     return total_score
 
 
+def part2(vals) -> int:
+    BRACKET_MAP_REVERSE = {v: k for k, v in BRACKET_MAP.items()}
+    scores = []
+
+    for line in vals:
+        queue = []
+        iscorrupted = False
+        for i in line:
+            if i in OPEN_BRACKETS:
+                queue.append(i)
+            else:
+                open_bracket_in_queue = queue.pop(len(queue) - 1)
+                expect_open_bracket = BRACKET_MAP.get(i)
+                if expect_open_bracket == open_bracket_in_queue:
+                    # log.info(
+                    #     f"Expected {expect_open_bracket}, found {open_bracket_in_queue} for {i}"
+                    # )
+                    pass
+                else:
+                    # log.info(
+                    #     f"Expected {expect_open_bracket}, but found {open_bracket_in_queue} instead for {i}"
+                    # )
+                    iscorrupted = True
+                    break
+        if (len(queue) != 0) and (iscorrupted == False):
+            score = 0
+            # log.info(f"Queue = {queue}")
+            # log.info(f"Start with a total score of 0.")
+            for i in reversed(queue):
+                # log.info(
+                #     f"Multiply the total score by 5 to get {score*5}, then add the value of {BRACKET_MAP_REVERSE.get(i)}, ({SCORE_MAP_PART2.get(BRACKET_MAP_REVERSE.get(i))}) to get a new total score of {score*5 + SCORE_MAP_PART2.get(BRACKET_MAP_REVERSE.get(i))}."
+                # )
+                score = score * 5 + SCORE_MAP_PART2.get(BRACKET_MAP_REVERSE.get(i))
+            scores.append(score)
+    scores.sort(reverse=True)
+    # log.info(f"{scores}")
+    return scores[int(len(scores) / 2)]
+
+
 if __name__ == "__main__":
-    log.info("Loading data....")
+    # log.info("Loading data....")
     vals = read_data()
     log.info(f"Part1: {part1(vals)}")
+    log.info(f"Part2: {part2(vals)}")
