@@ -24,7 +24,7 @@ def read_data() -> list:
 
 
 def part1(fishes: list, day: int) -> int:
-    print("Initial state: ",fishes)
+    print("Initial state: ", fishes)
     for i in range(0, day):
         for j in range(len(fishes)):
             if fishes[j] == 0:
@@ -39,14 +39,17 @@ def part1(fishes: list, day: int) -> int:
         print(len(fishes))
     return len(fishes)
 
-def part2(fishes: list, day: int)-> int:
+
+def part2(fishes: list, day: int) -> int:
     fishes_ = [fishes.count(x) for x in range(9)]
     for i in range(day):
         new_fishes = fishes_[0]
         fishes_ = fishes_[1:] + [new_fishes]
         fishes_[6] += new_fishes
-        print("Day ", i , " fishes = ", sum(fishes_))
+        print("Day ", i, " fishes = ", sum(fishes_))
     return sum(fishes_)
+
+
 if __name__ == "__main__":
     fishes = read_data()
     print(f"Part 1: {part1(fishes,80)}")

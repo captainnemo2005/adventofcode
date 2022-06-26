@@ -26,10 +26,11 @@ from itertools import product
 from operator import mul
 import numpy as np
 
+
 def read_data() -> list:
     with open(
-            "/Users/cptnemo2005/Desktop/Work/self-sufficient-me/adventofcode/data/day9data.txt",
-            "r",
+        "/Users/cptnemo2005/Desktop/Work/self-sufficient-me/adventofcode/data/day9data.txt",
+        "r",
     ) as file:
         pars_line = lambda line: [int(n) for n in line]
         return list(map(pars_line, file.read().splitlines()))
@@ -81,9 +82,9 @@ def part2(vals: list) -> int:
     # print(basins)
     largest_basins = sorted(map(len, basins), reverse=True)
     return reduce(
-            mul,
-            largest_basins[:3],
-        )
+        mul,
+        largest_basins[:3],
+    )
 
 
 if __name__ == "__main__":
