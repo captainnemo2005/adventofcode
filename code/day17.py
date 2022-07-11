@@ -24,22 +24,50 @@ log.basicConfig(level=log.DEBUG,format="%(asctime)s %(message)s")
 def in_targe(x,y,coords):
     return coords[0][0] <= x and x <= coords[0][1] and coords[1][0] <= y and y <= coords[1][1]
 
-def in_bounds(x,y,coords):
-    return
+ss = 500
+def in_bounds(x,y):
+    return -ss <= x and x <= ss and -ss <= y and y <= 10000
+
+def in_target(x, y, target_x, target_y):
+	return target_x[0] <= x and x <= target_x[1] and target_y[0] <= y and y <= target_y[1]
+
 def read_vals():
     with open('../data/day17data.txt','r') as file:
-        lines = file.read().splitlines()
-        coord = lines[0].split(',')
-        x = tuple([int(i) for i in coord[0][2:].split('..')])
-        y = tuple([int(i) for i in coord[1][3:].split('..')])
-        return tuple(x,y)
+        lines = [s[2:].split("..") for s in file.read().strip().replace("target area: ", "").split(", ")]
+    return [(int(lines[0][0]), int(lines[0][1])), (int(lines[1][0]), int(lines[1][1]))]
 
-def part1(coords):
-    max_y = -99999999
-    for x  in range(0,coords[0][1]):
-        for y in range()
 
+def brute_force(vals) -> list:
+    r_x = range(vals[0][0],vals[0][1]+1)
+    r_y = range(vals[1][0],vals[1][1]+1)
+
+    tmp = [fire_probe(x,y,r_x,r_y) for x in range(vals[0][1] +1) for y in range(-1000,1000)]
+    return [velocity for velocity in tmp if velocity[2] is not None]
+
+def fire_probe(vel_x,vel_y,goal_x,goal_y):
+     vx,vy = vel_x, vel_y
+     x,y = 0,0
+     max_y = -999999999
+     while x+vx < goal_x.stop:
+         x += vx
+         y += vy
+         max_y = max(y,max_y)
+         vx += 0 if vx == 0 else -1 if vx > 0 else 1
+         vy -= 1
+         if vx == 0 and (x < goal_x.start or y < goal_y.start):
+             break
+         if x in goal_x and y in goal_y:
+             return vel_x, vel_y, max_y
+     return vel_x, vel_y, None
+
+def part1(vals):
+    return max(vals, key = lambda x:x[2])[2]
+
+def part2(vals):
+    return len(vals)
 
 if __name__=='__main__':
-    coords = read_vals()
-    log.info(f"Part 1: {part1(coords)}")
+    vals = read_vals()
+    vals = brute_force(vals)
+    log.info(f"Part 1: {part1(vals)}")
+    log.info(f"Part 2: {part2(vals)}")
