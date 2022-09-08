@@ -19,54 +19,79 @@ Find the initial velocity that causes the probe to reach the highest y position 
 What is the highest y position it reaches on this trajectory?
 """
 import logging as log
-log.basicConfig(level=log.DEBUG,format="%(asctime)s %(message)s")
 
-def in_targe(x,y,coords):
-    return coords[0][0] <= x and x <= coords[0][1] and coords[1][0] <= y and y <= coords[1][1]
+log.basicConfig(level=log.DEBUG, format="%(asctime)s %(message)s")
+
+
+def in_targe(x, y, coords):
+    return (
+        coords[0][0] <= x
+        and x <= coords[0][1]
+        and coords[1][0] <= y
+        and y <= coords[1][1]
+    )
+
 
 ss = 500
-def in_bounds(x,y):
+
+
+def in_bounds(x, y):
     return -ss <= x and x <= ss and -ss <= y and y <= 10000
 
+
 def in_target(x, y, target_x, target_y):
-	return target_x[0] <= x and x <= target_x[1] and target_y[0] <= y and y <= target_y[1]
+    return (
+        target_x[0] <= x and x <= target_x[1] and target_y[0] <= y and y <= target_y[1]
+    )
+
 
 def read_vals():
-    with open('../data/day17data.txt','r') as file:
-        lines = [s[2:].split("..") for s in file.read().strip().replace("target area: ", "").split(", ")]
+    with open("../data/day17data.txt", "r") as file:
+        lines = [
+            s[2:].split("..")
+            for s in file.read().strip().replace("target area: ", "").split(", ")
+        ]
     return [(int(lines[0][0]), int(lines[0][1])), (int(lines[1][0]), int(lines[1][1]))]
 
 
 def brute_force(vals) -> list:
-    r_x = range(vals[0][0],vals[0][1]+1)
-    r_y = range(vals[1][0],vals[1][1]+1)
+    r_x = range(vals[0][0], vals[0][1] + 1)
+    r_y = range(vals[1][0], vals[1][1] + 1)
 
-    tmp = [fire_probe(x,y,r_x,r_y) for x in range(vals[0][1] +1) for y in range(-1000,1000)]
+    tmp = [
+        fire_probe(x, y, r_x, r_y)
+        for x in range(vals[0][1] + 1)
+        for y in range(-1000, 1000)
+    ]
     return [velocity for velocity in tmp if velocity[2] is not None]
 
-def fire_probe(vel_x,vel_y,goal_x,goal_y):
-     vx,vy = vel_x, vel_y
-     x,y = 0,0
-     max_y = -999999999
-     while x+vx < goal_x.stop:
-         x += vx
-         y += vy
-         max_y = max(y,max_y)
-         vx += 0 if vx == 0 else -1 if vx > 0 else 1
-         vy -= 1
-         if vx == 0 and (x < goal_x.start or y < goal_y.start):
-             break
-         if x in goal_x and y in goal_y:
-             return vel_x, vel_y, max_y
-     return vel_x, vel_y, None
+
+def fire_probe(vel_x, vel_y, goal_x, goal_y):
+    vx, vy = vel_x, vel_y
+    x, y = 0, 0
+    max_y = -999999999
+    while x + vx < goal_x.stop:
+        x += vx
+        y += vy
+        max_y = max(y, max_y)
+        vx += 0 if vx == 0 else -1 if vx > 0 else 1
+        vy -= 1
+        if vx == 0 and (x < goal_x.start or y < goal_y.start):
+            break
+        if x in goal_x and y in goal_y:
+            return vel_x, vel_y, max_y
+    return vel_x, vel_y, None
+
 
 def part1(vals):
-    return max(vals, key = lambda x:x[2])[2]
+    return max(vals, key=lambda x: x[2])[2]
+
 
 def part2(vals):
     return len(vals)
 
-if __name__=='__main__':
+
+if __name__ == "__main__":
     vals = read_vals()
     vals = brute_force(vals)
     log.info(f"Part 1: {part1(vals)}")

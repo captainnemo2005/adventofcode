@@ -22,7 +22,7 @@ ab: 1
 
 def read_file():
     with open(
-        "/Users/cptnemo2005/Desktop/Work/self-sufficient-me/adventofcode/data/day8data.txt",
+        "/2021/data/day8data.txt",
         "r",
     ) as file:
         return [

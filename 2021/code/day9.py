@@ -29,7 +29,7 @@ import numpy as np
 
 def read_data() -> list:
     with open(
-        "/Users/cptnemo2005/Desktop/Work/self-sufficient-me/adventofcode/data/day9data.txt",
+        "/2021/data/day9data.txt",
         "r",
     ) as file:
         pars_line = lambda line: [int(n) for n in line]

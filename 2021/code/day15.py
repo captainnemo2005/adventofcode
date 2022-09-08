@@ -48,17 +48,18 @@ def dijkstra(cavern: tuple) -> dict:
     dimension, graph = cavern[0], cavern[1]
     neighbors = get_neighbors(dimension)
     queue = PriorityQueue()
-    queue.put((0,0))
-    dist = {0:0}
+    queue.put((0, 0))
+    dist = {0: 0}
 
     while not queue.empty():
         distance, idx = queue.get()
         for neighbor in neighbors[idx]:
             d = distance + graph[neighbor]
-            if neighbor not in dist or dist[neighbor]>d:
+            if neighbor not in dist or dist[neighbor] > d:
                 dist[neighbor] = d
-                queue.put((d,neighbor))
+                queue.put((d, neighbor))
     return dist
+
 
 def expand(cavern: tuple) -> tuple:
     dim = cavern[0]

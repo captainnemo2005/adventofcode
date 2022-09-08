@@ -83,13 +83,16 @@ A0016C880162017C3686B18A3D4780 is an operator packet that contains an operator p
 """
 
 import logging as log
-log.basicConfig(level=log.DEBUG,format='%(asctime)s %(message)s')
 
-def read_vals() ->list:
-    with open('../data/day16data.txt','r') as file:
+log.basicConfig(level=log.DEBUG, format="%(asctime)s %(message)s")
+
+
+def read_vals() -> list:
+    with open("../data/day16data.txt", "r") as file:
         lines = file.read().splitlines()
 
         return lines[0]
+
 
 def recur(init):
 
@@ -98,19 +101,21 @@ def recur(init):
     packet = init[6:]
 
     log.info(f"version = {version}, type_id = {type_id}")
-    if type_id == 4: # literal packet
-        while packet[0] == '1':
+    if type_id == 4:  # literal packet
+        while packet[0] == "1":
             packet = packet[5:]
-        packet = packet[5:] # for this type, we only have 1 type_id so just skip them till the end 5 bits and return
+        packet = packet[
+            5:
+        ]  # for this type, we only have 1 type_id so just skip them till the end 5 bits and return
         return packet, version
 
     length_id = packet[0]
     packet = packet[1:]
 
-    if length_id == '0':
+    if length_id == "0":
         total_length = int(packet[:15], 2)
-        subpacket = packet[15:15 + total_length]
-        packet = packet[15 + total_length:]
+        subpacket = packet[15 : 15 + total_length]
+        packet = packet[15 + total_length :]
         # For each subpacket inside the current packet, update the total version count
         while len(subpacket) != 0:
             subpacket, subversion = recur(subpacket)
@@ -122,7 +127,8 @@ def recur(init):
         for i in range(num_packets):
             packet, subversion = recur(packet)
             version += subversion
-    return packet,version
+    return packet, version
+
 
 def recur_2(packet):
     version = int(packet[:3], 2)
@@ -131,8 +137,8 @@ def recur_2(packet):
     subvalues = []
 
     if type_id == 4:
-        value = ''
-        while packet[0] == '1':
+        value = ""
+        while packet[0] == "1":
             value += packet[1:5]
             packet = packet[5:]
         value += packet[1:5]
@@ -142,10 +148,10 @@ def recur_2(packet):
 
     length_id = packet[0]
     packet = packet[1:]
-    if length_id == '0':
+    if length_id == "0":
         total_length = int(packet[:15], 2)
-        subpacket = packet[15:15 + total_length]
-        packet = packet[15 + total_length:]
+        subpacket = packet[15 : 15 + total_length]
+        packet = packet[15 + total_length :]
 
         while len(subpacket) != 0:
             # Add the values for each subpacket to the overall values
@@ -178,22 +184,26 @@ def recur_2(packet):
 
     return packet, value
 
+
 def part2(init):
     value = recur_2(init)[1]
     return value
+
+
 def part1(init):
 
     version = recur(init)[1]
 
     return version
-if __name__=='__main__':
-    log.info('Load data into memory...')
+
+
+if __name__ == "__main__":
+    log.info("Load data into memory...")
     data = read_vals()
-    init = ''
-    log.info('Convert data into binary format...')
+    init = ""
+    log.info("Convert data into binary format...")
     for i in data:
-        init += bin(int(i,16))[2:].zfill(4)
+        init += bin(int(i, 16))[2:].zfill(4)
 
     log.info(f"Part 1: {part1(init)}")
     log.info(f"Part 2: {part2(init)}")
-

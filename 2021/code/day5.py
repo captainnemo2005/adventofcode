@@ -4,7 +4,7 @@ import numpy as np
 
 def read_file() -> list:
     with open(
-        "/Users/cptnemo2005/Desktop/Work/self-sufficient-me/adventofcode/data/day5data.txt",
+        "/2021/data/day5data.txt",
         "r",
     ) as file:
         lines = [line.split(" -> ") for line in file.read().strip().split("\n")]

@@ -15,7 +15,7 @@ import numpy as np
 
 def read_data() -> list:
     with open(
-        "/Users/cptnemo2005/Desktop/Work/self-sufficient-me/adventofcode/data/day7data.txt",
+        "/2021/data/day7data.txt",
         "r",
     ) as file:
         line = file.read().strip().split("\n")[0].split(",")
